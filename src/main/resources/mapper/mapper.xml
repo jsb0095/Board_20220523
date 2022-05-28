@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="board">
+    <insert id="save" parameterType="Board">
+        insert into board(boardWriter,boardTitle,boardPassword,boardContents,boardCreatedDate) values (#{boardWriter},#{boardTitle},#{boardPassword},#{boardContents},now())
+    </insert>
+    <select id="findAll" resultType="Board">
+        select * from board;
+    </select>
+    <update id="hitAdd" parameterType="Long">
+        update board set boardHits=boardHits+1 where id=#{id}
+    </update>
+    <select id="update" resultType="Board" parameterType="Long">
+        select * from board where id=#{id}
+    </select>
+
+    <delete id="dropPasswordCheck" parameterType="Board" >
+      delete from board where boardPassword=#{boardPassword} and id = #{id}
+    </delete>
+    <update id="update1" parameterType="Board">
+        update board set boardContents =#{boardContents},boardTitle=#{boardTitle} where id=#{id}
+    </update>
+    <select id="updatePassword" resultType="Board" parameterType="Long">
+        select * from board where id=#{id}
+    </select>
+    <insert id="saveFile" parameterType="Board">
+        insert into board(boardWriter,boardTitle,boardPassword,boardContents,boardCreatedDate,boardFileName) values (#{boardWriter},#{boardTitle},#{boardPassword},#{boardContents},now(),#{boardFileName})
+    </insert>
+    <select id="pagingList" parameterType="java.util.HashMap" resultType="Board">
+        select * from board order by id desc limit #{start}, #{limit}
+    </select>
+
+    <select id="count" resultType="int">
+        select count(id) from board
+    </select>
+    <select id="search" parameterType="java.util.HashMap" resultType="Board">
+        select * from board where ${type}
+        like concat('%',#{q},'%') order by id desc;
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
